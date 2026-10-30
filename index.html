@@ -1,0 +1,697 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio X da Juventude | Diagnóstico Jovem</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root {
+    --bg:#0b1020;
+    --panel:#151e32;
+    --border:#293650;
+    --primary:#818cf8;
+    --cyan:#22d3ee;
+    --text:#f8fafc;
+    --muted:#9caec5;
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body {
+    background:var(--bg);
+    color:var(--text);
+}
+
+header {
+    padding:35px 8%;
+    background:linear-gradient(120deg,#172554,#312e81,#164e63);
+}
+
+header h1 {
+    font-size:clamp(27px,4vw,42px);
+    margin-bottom:12px;
+}
+
+header p {
+    color:#dbeafe;
+    line-height:1.6;
+}
+
+nav {
+    background:#111a2d;
+    padding:15px 8%;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    border-bottom:1px solid var(--border);
+}
+
+nav a {
+    color:#cbd5e1;
+    text-decoration:none;
+    font-size:14px;
+}
+
+nav a:hover {
+    color:var(--cyan);
+}
+
+.container {
+    width:84%;
+    max-width:1400px;
+    margin:auto;
+}
+
+section {
+    padding:35px 0;
+    scroll-margin-top:20px;
+}
+
+.section-title {
+    font-size:25px;
+    margin-bottom:10px;
+}
+
+.subtitle {
+    color:var(--muted);
+    margin-bottom:23px;
+    line-height:1.6;
+}
+
+.cards {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:18px;
+}
+
+.card,.chart-box,.report,.improvement,.upload-box {
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:23px;
+}
+
+.card h3 {
+    color:var(--muted);
+    font-size:14px;
+}
+
+.card h2 {
+    font-size:32px;
+    color:var(--primary);
+    margin-top:15px;
+}
+
+.card small {
+    color:var(--muted);
+}
+
+.charts {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.chart-box h3 {
+    margin-bottom:20px;
+    font-size:16px;
+}
+
+.chart-box canvas {
+    max-height:280px;
+}
+
+.improvements {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:18px;
+}
+
+.improvement {
+    transition:.25s;
+}
+
+.improvement:hover {
+    transform:translateY(-4px);
+    border-color:var(--primary);
+}
+
+.improvement .emoji {
+    font-size:30px;
+    margin-bottom:15px;
+}
+
+.improvement h3 {
+    color:var(--primary);
+    margin-bottom:12px;
+}
+
+.improvement p,.report p {
+    color:#cbd5e1;
+    line-height:1.7;
+}
+
+.improvement ul {
+    margin:12px 0 0 20px;
+    color:#cbd5e1;
+    line-height:1.9;
+}
+
+.tag {
+    display:inline-block;
+    background:#312e81;
+    color:#c7d2fe;
+    border-radius:20px;
+    padding:7px 11px;
+    font-size:12px;
+    margin-top:15px;
+}
+
+.report h3 {
+    margin:20px 0 10px;
+    color:var(--cyan);
+}
+
+.report h3:first-child {
+    margin-top:0;
+}
+
+.report ul {
+    margin-left:20px;
+    color:#cbd5e1;
+    line-height:2;
+}
+
+button {
+    background:#6366f1;
+    border:0;
+    color:white;
+    padding:12px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    margin-top:15px;
+}
+
+button:hover {
+    background:#4f46e5;
+}
+
+input {
+    color:white;
+    margin-top:15px;
+    max-width:100%;
+}
+
+.note {
+    color:#fbbf24;
+    font-size:13px;
+    line-height:1.6;
+    margin-top:15px;
+}
+
+footer {
+    text-align:center;
+    padding:35px;
+    color:var(--muted);
+    border-top:1px solid var(--border);
+    line-height:2;
+}
+
+@media(max-width:600px) {
+    .container {
+        width:90%;
+    }
+    header {
+        padding:30px 5%;
+    }
+    nav {
+        padding:15px 5%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🔎 RAIO X DA JUVENTUDE</h1>
+    <p>
+        Diagnóstico da realidade juvenil: educação, trabalho,
+        tecnologia, bem-estar e perspectivas para o futuro.
+    </p>
+</header>
+
+<nav>
+    <a href="#inicio">Indicadores</a>
+    <a href="#analise">Análises</a>
+    <a href="#melhorias">Melhorias</a>
+    <a href="#relatorio">Relatório</a>
+    <a href="#dados">Importar dados</a>
+</nav>
+
+<main class="container">
+
+<!-- INDICADORES -->
+
+<section id="inicio">
+    <h2 class="section-title">📊 Panorama da juventude</h2>
+    <p class="subtitle">
+        Indicadores gerais dos participantes da pesquisa.
+    </p>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Jovens analisados</h3>
+            <h2 id="total">300</h2>
+            <small>Participantes</small>
+        </div>
+
+        <div class="card">
+            <h3>Idade média</h3>
+            <h2 id="idade">19,5</h2>
+            <small>Anos</small>
+        </div>
+
+        <div class="card">
+            <h3>Acesso à internet</h3>
+            <h2 id="internet">94%</h2>
+            <small>Dos participantes</small>
+        </div>
+
+        <div class="card">
+            <h3>Dificuldade escolar</h3>
+            <h2 id="dificuldade">45%</h2>
+            <small>Dos participantes</small>
+        </div>
+    </div>
+
+    <p class="note" id="tipoDados">
+        ⚠️ Dados demonstrativos. Não representam uma pesquisa real.
+    </p>
+</section>
+
+<!-- GRAFICOS -->
+
+<section id="analise">
+    <h2 class="section-title">📈 Análise de dados</h2>
+    <p class="subtitle">
+        Visualização dos principais aspectos da realidade juvenil.
+    </p>
+
+    <div class="charts">
+
+        <div class="chart-box">
+            <h3>🎓 Escolaridade</h3>
+            <canvas id="escolaridade"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>💼 Situação dos jovens</h3>
+            <canvas id="situacao"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>💻 Acesso à tecnologia</h3>
+            <canvas id="tecnologia"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>🔮 Perspectivas para o futuro</h3>
+            <canvas id="futuro"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>🚩 Principais desafios</h3>
+            <canvas id="desafios"></canvas>
+        </div>
+
+    </div>
+</section>
+
+<!-- MELHORIAS -->
+
+<section id="melhorias">
+    <h2 class="section-title">💡 Propostas de melhoria</h2>
+    <p class="subtitle">
+        Ideias e ações para transformar a realidade dos jovens.
+    </p>
+
+    <div class="improvements">
+
+        <div class="improvement">
+            <div class="emoji">🎓</div>
+            <h3>Educação de qualidade</h3>
+            <p>Melhorar o ensino e ampliar oportunidades de aprendizagem.</p>
+            <ul>
+                <li>Aulas gratuitas de reforço.</li>
+                <li>Preparação para o ENEM.</li>
+                <li>Mais acesso a materiais didáticos.</li>
+                <li>Orientação profissional nas escolas.</li>
+            </ul>
+            <span class="tag">Impacto: aprendizagem</span>
+        </div>
+
+        <div class="improvement">
+            <div class="emoji">💼</div>
+            <h3>Emprego e renda</h3>
+            <p>Facilitar a entrada dos jovens no mercado de trabalho.</p>
+            <ul>
+                <li>Ampliar vagas de jovem aprendiz.</li>
+                <li>Cursos profissionalizantes.</li>
+                <li>Feiras de profissões.</li>
+                <li>Parcerias com empresas locais.</li>
+            </ul>
+            <span class="tag">Impacto: oportunidades</span>
+        </div>
+
+        <div class="improvement">
+            <div class="emoji">💻</div>
+            <h3>Inclusão digital</h3>
+            <p>Garantir mais acesso às ferramentas tecnológicas.</p>
+            <ul>
+                <li>Laboratórios de informática.</li>
+                <li>Cursos de programação.</li>
+                <li>Internet nas escolas.</li>
+                <li>Educação para segurança digital.</li>
+            </ul>
+            <span class="tag">Impacto: tecnologia</span>
+        </div>
+
+        <div class="improvement">
+            <div class="emoji">🧠</div>
+            <h3>Saúde e bem-estar</h3>
+            <p>Promover qualidade de vida e acolhimento.</p>
+            <ul>
+                <li>Acesso a apoio psicológico.</li>
+                <li>Projetos esportivos.</li>
+                <li>Campanhas educativas.</li>
+                <li>Espaços de escuta nas escolas.</li>
+            </ul>
+            <span class="tag">Impacto: qualidade de vida</span>
+        </div>
+
+        <div class="improvement">
+            <div class="emoji">🏙️</div>
+            <h3>Participação social</h3>
+            <p>Dar voz aos jovens nas decisões da comunidade.</p>
+            <ul>
+                <li>Conselhos de juventude.</li>
+                <li>Consultas públicas.</li>
+                <li>Projetos comunitários.</li>
+                <li>Participação estudantil.</li>
+            </ul>
+            <span class="tag">Impacto: cidadania</span>
+        </div>
+
+        <div class="improvement">
+            <div class="emoji">🚀</div>
+            <h3>Empreendedorismo</h3>
+            <p>Incentivar criatividade, inovação e autonomia.</p>
+            <ul>
+                <li>Educação financeira.</li>
+                <li>Oficinas de empreendedorismo.</li>
+                <li>Feiras de projetos.</li>
+                <li>Incentivo a ideias inovadoras.</li>
+            </ul>
+            <span class="tag">Impacto: inovação</span>
+        </div>
+
+    </div>
+</section>
+
+<!-- RELATORIO -->
+
+<section id="relatorio">
+    <h2 class="section-title">📋 Relatório executivo</h2>
+    <p class="subtitle">
+        Resumo dos dados e possíveis caminhos para melhorar a vida dos jovens.
+    </p>
+
+    <div class="report">
+        <h3>Panorama geral</h3>
+        <p id="resumo">
+            A pesquisa apresenta informações sobre educação,
+            emprego, tecnologia e perspectivas juvenis.
+        </p>
+
+        <h3>Principais pontos de atenção</h3>
+        <ul id="pontos">
+            <li>Fortalecimento da educação.</li>
+            <li>Ampliação das oportunidades profissionais.</li>
+            <li>Redução da desigualdade digital.</li>
+        </ul>
+
+        <h3>Conclusão</h3>
+        <p>
+            O Raio X da Juventude busca transformar informações
+            em propostas concretas. A aproximação entre escolas,
+            comunidade e gestores públicos pode contribuir para
+            uma juventude com mais oportunidades e participação.
+        </p>
+
+        <button onclick="window.print()">🖨️ Imprimir relatório</button>
+    </div>
+</section>
+
+<!-- IMPORTACAO -->
+
+<section id="dados">
+    <h2 class="section-title">📂 Importar dados da pesquisa</h2>
+    <p class="subtitle">
+        Substitua os dados demonstrativos pelos dados reais coletados.
+    </p>
+
+    <div class="upload-box">
+        <h3>📁 Enviar planilha CSV</h3>
+        <p style="color:#9caec5;margin-top:10px;line-height:1.7">
+            O arquivo precisa conter as colunas:
+            Idade, Escolaridade, Situacao, Acesso_Internet,
+            Dificuldade_Escolar, Perspectiva_Futuro e
+            Principal_Desafio.
+        </p>
+
+        <input type="file" id="arquivo" accept=".csv">
+        <br>
+        <button onclick="importarCSV()">Importar pesquisa</button>
+        <p id="status" style="margin-top:15px"></p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <h3>🔎 RAIO X DA JUVENTUDE</h3>
+    <p>Educação • Trabalho • Tecnologia • Futuro</p>
+    <p>Projeto de análise de dados e probabilidades — 2026</p>
+</footer>
+
+<script>
+
+// ====================================
+// DADOS DEMONSTRATIVOS
+// ====================================
+
+const base = {
+    escolaridade:[45,195,60],
+    situacao:[120,60,90,30],
+    tecnologia:[282,18],
+    futuro:[165,90,45],
+    desafios:[75,65,55,60,45]
+};
+
+const cores = [
+    '#818cf8','#22d3ee','#a78bfa','#f472b6','#34d399'
+];
+
+let graficos = {};
+
+const opcoes = {
+    responsive:true,
+    plugins:{
+        legend:{
+            labels:{color:'#f8fafc'}
+        }
+    }
+};
+
+function criarGrafico(id,tipo,labels,valores) {
+    return new Chart(document.getElementById(id),{
+        type:tipo,
+        data:{
+            labels:labels,
+            datasets:[{
+                data:valores,
+                backgroundColor:cores,
+                borderWidth:0,
+                borderRadius:6
+            }]
+        },
+        options:opcoes
+    });
+}
+
+function montarGraficos(d) {
+    Object.values(graficos).forEach(g=>g.destroy());
+
+    graficos.escolaridade=criarGrafico(
+        'escolaridade','bar',
+        ['Fundamental','Médio','Superior'],
+        d.escolaridade
+    );
+
+    graficos.situacao=criarGrafico(
+        'situacao','doughnut',
+        ['Estuda','Trabalha','Estuda e trabalha','Nenhum'],
+        d.situacao
+    );
+
+    graficos.tecnologia=criarGrafico(
+        'tecnologia','pie',
+        ['Com internet','Sem internet'],
+        d.tecnologia
+    );
+
+    graficos.futuro=criarGrafico(
+        'futuro','doughnut',
+        ['Otimista','Neutra','Pessimista'],
+        d.futuro
+    );
+
+    graficos.desafios=criarGrafico(
+        'desafios','bar',
+        ['Emprego','Educação','Saúde mental',
+         'Desigualdade','Tecnologia'],
+        d.desafios
+    );
+}
+
+montarGraficos(base);
+
+// ====================================
+// IMPORTAR CSV
+// ====================================
+
+function importarCSV() {
+    const arquivo=document.getElementById('arquivo').files[0];
+
+    if(!arquivo) {
+        alert('Selecione um arquivo CSV.');
+        return;
+    }
+
+    const leitor=new FileReader();
+
+    leitor.onload=function(e) {
+        try {
+            const linhas=e.target.result
+                .replace(/^\uFEFF/,'')
+                .trim().split(/\r?\n/);
+
+            const cabecalho=linhas[0].split(',')
+                .map(x=>x.trim());
+
+            const colunas=[
+                'Idade','Escolaridade','Situacao',
+                'Acesso_Internet','Dificuldade_Escolar',
+                'Perspectiva_Futuro','Principal_Desafio'
+            ];
+
+            if(!colunas.every(c=>cabecalho.includes(c))) {
+                throw new Error('Colunas incorretas no CSV.');
+            }
+
+            const registros=linhas.slice(1)
+                .filter(l=>l.trim())
+                .map(l=>{
+                    const v=l.split(',');
+                    return Object.fromEntries(
+                        cabecalho.map((c,i)=>[c,v[i]?.trim()])
+                    );
+                });
+
+            if(!registros.length) {
+                throw new Error('Nenhum registro encontrado.');
+            }
+
+            const contar=(campo,opcoes)=>
+                opcoes.map(op=>registros.filter(
+                    r=>r[campo]===op
+                ).length);
+
+            const idades=registros.map(r=>Number(r.Idade));
+
+            if(idades.some(n=>!Number.isFinite(n)||n<=0)) {
+                throw new Error('Idade inválida encontrada.');
+            }
+
+            const novo={
+                escolaridade:contar('Escolaridade',[
+                    'Ensino Fundamental','Ensino Médio','Ensino Superior'
+                ]),
+                situacao:contar('Situacao',[
+                    'Estuda','Trabalha','Estuda e trabalha',
+                    'Não estuda nem trabalha'
+                ]),
+                tecnologia:contar('Acesso_Internet',['Sim','Não']),
+                futuro:contar('Perspectiva_Futuro',[
+                    'Otimista','Neutra','Pessimista'
+                ]),
+                desafios:contar('Principal_Desafio',[
+                    'Emprego','Educação','Saúde mental',
+                    'Desigualdade','Tecnologia'
+                ])
+            };
+
+            const porcentagem=(campo,valor)=>
+                registros.filter(r=>r[campo]===valor).length
+                /registros.length*100;
+
+            document.getElementById('total').textContent=registros.length;
+
+            document.getElementById('idade').textContent=
+                (idades.reduce((a,b)=>a+b,0)/idades.length)
+                .toFixed(1).replace('.',',');
+
+            document.getElementById('internet').textContent=
+                porcentagem('Acesso_Internet','Sim').toFixed(1)+'%';
+
+            document.getElementById('dificuldade').textContent=
+                porcentagem('Dificuldade_Escolar','Sim').toFixed(1)+'%';
+
+            montarGraficos(novo);
+
+            document.getElementById('resumo').textContent=
+                `Foram analisados ${registros.length} jovens. `+
+                `${porcentagem('Dificuldade_Escolar','Sim').toFixed(1)}% `+
+                'relataram dificuldades escolares e '+
+                `${porcentagem('Acesso_Internet','Sim').toFixed(1)}% `+
+                'possuem acesso à internet.';
+
+            document.getElementById('tipoDados').textContent=
+                '✅ Dados reais importados da planilha selecionada.';
+
+            document.getElementById('status').textContent=
+                'Pesquisa importada com sucesso!';
+
+        } catch(erro) {
+            document.getElementById('status').textContent=
+                'Erro: '+erro.message;
+        }
+    };
+
+    leitor.readAsText(arquivo,'UTF-8');
+}
+
+</script>
+
+</body>
+</html>
